@@ -23,8 +23,27 @@ Restore                         ,   velero restore create --from-backup yelb-bac
                                 ,   velero restore get
                                 ,   kubectl describe -n velero restores.velero.io yelb-backup-v1
 check                           ,   kubectl get svc -n yelb
+schedule                        ,   velero create schedule yelb --schedule="@every 10m" --include-namespaces yelb
 --------                        ,   ------------------------------------------------------
 Delete Velero                   ,   kubectl delete namespace/velero clusterrolebinding/velero
                                 ,   kubectl delete crds -l component=velero
 --------                        ,   ------------------------------------------------------
 Restore in new cluster          ,   
+Load Data                       ,   kubectl exec -it yelb-db-0 bash
+                                ,   psql -U postgres
+                                ,   CREATE TABLE images (img bytea);
+                                ,   cd /var/lib/postgresql/data/pgdata
+                                ,   head -c 1000004182 </dev/urandom > myfile1 # 954 MB
+                                ,   INSERT INTO images (img) VALUES (pg_read_binary_file('myfile1'));
+                                ,   SELECT octet_length(img) FROM images;
+Backup                          ,   velero describe backups  | grep -A 1 -B 0 Started
+Test Output                     ,   5 GB Took   - 15 Min - S3 has 6.3 GB
+                                ,   Iteration 2 -  4 Min - S3 has 7.2 GB
+                                ,   Iteration 3 - 25 Sec - S3 has 7.2 GB - 1497 Obj
+                                ,   Iteration 4 - 11 Sec - S3 has 7.2 GB - 1511 Obj
+                                ,   Iteration 5 - 5 min  - S3 has   9 GB - 1892 Obj ( 1 GB Incre)
+                                ,   Iteration 6 - 1 min  - S3 has 9.1 GB - 1929 Obj
+                                ,   Iteration 7 - 20 sec - S3 has 9.1 GB - 1945 Obj
+                                ,   Iteration 8 - 10 sec - S3 has 9.1 GB - 1958 Obj
+                                ,   Iteration 9 - 10 sec - S3 has 9.1 GB - 1971 Obj
+                                ,   Iteration 10- 10 sec - S3 has 9.1 GB - 1984 Obj
