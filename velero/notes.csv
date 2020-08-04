@@ -1,0 +1,30 @@
+Install velero                  ,   brew install velero
+AWS CLI                         ,   docker run --rm -it amazon/aws-cli
+                                ,   alias aws='docker run --rm -it amazon/aws-cli' 
+AWS Provider                    ,   https://github.com/vmware-tanzu/velero-plugin-for-aws
+AWS Console                     ,   https://console.aws.amazon.com/s3/home?region=us-east-1
+                                ,
+Setup Velero for each cluster   ,   pre-req-sh.sh
+--------                        ,   ------------------------------------------------------
+Deploy App                      ,   kubectl delete -f /Users/avsh/code/personal/repo/sampleapps-k8s/yelb/yelb-ss.yaml
+                                ,   kubectl apply -f /Users/avsh/code/personal/repo/sampleapps-k8s/yelb/sc.yaml
+                                ,   kubectl apply -f /Users/avsh/code/personal/repo/sampleapps-k8s/yelb/yelb-ss.yaml -n yelb
+                                ,   kns yelb
+                                ,   kubectl get svc -n yelb
+                                ,   kubectl -n yelb annotate pod/yelb-db-0 backup.velero.io/backup-volumes=mysql-persistent-storage
+                                ,   kubectl -n yelb annotate pod/redis-server-0 backup.velero.io/backup-volumes=redis-persistent-storage
+Backup                          ,   velero backup create yelb-backup-v1 --include-namespaces yelb
+Backup Details                  ,   velero backup get
+                                ,   velero backup describe yelb-backup-v1 --details
+                                ,   kubectl describe -n velero backups.velero.io yelb-backup-v1
+                                ,   velero schedule get
+Delete ns                       ,   kubectl delete namespaces yelb
+Restore                         ,   velero restore create --from-backup yelb-backup-v1
+                                ,   velero restore get
+                                ,   kubectl describe -n velero restores.velero.io yelb-backup-v1
+check                           ,   kubectl get svc -n yelb
+--------                        ,   ------------------------------------------------------
+Delete Velero                   ,   kubectl delete namespace/velero clusterrolebinding/velero
+                                ,   kubectl delete crds -l component=velero
+--------                        ,   ------------------------------------------------------
+Restore in new cluster          ,   

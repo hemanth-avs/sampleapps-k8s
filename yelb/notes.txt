@@ -1,0 +1,4 @@
+kubectl create ns yelb
+kns yelb
+kubectl apply -f /Users/avsh/code/personal/repo/sampleapps-k8s/yelb/yelb-deploy.yaml
+kubectl apply -f /Users/avsh/code/personal/repo/sampleapps-k8s/yelb/yelb-ss.yaml
