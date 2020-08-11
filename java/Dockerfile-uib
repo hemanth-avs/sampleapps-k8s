@@ -13,7 +13,7 @@ RUN groupadd -g 1001 java \
 
 RUN mkdir /data \
     && chown java:java /data \ 
-    && chown java:java /java
+    && chown -R java:java /java
 
 ENV PATH=/java/bin:$PATH 
 USER java
