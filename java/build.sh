@@ -1,11 +1,12 @@
-rm -rf jre8u265
+rm -rf jdk8u265
 
-FILE=bellsoft-jre8u265+1-linux-amd64.tar.gz
+export tag=v4
+FILE=bellsoft-jdk8u265+1-linux-amd64.tar.gz
 if [ -f "$FILE" ]; then
     echo "$FILE exists."
-    tar xf bellsoft-jre8u265+1-linux-amd64.tar.gz
-    docker build -t java:latest .
-    docker run  java:latest /bin/bash -c "java -version"
+    tar xf bellsoft-jdk8u265+1-linux-amd64.tar.gz
+    docker build -f Dockerfile-uib -t java:$tag .
+    docker run java:$tag /bin/bash -c "java -version"
 else 
     echo "$FILE does not exist. Please copy file from Tanzu network"
 fi

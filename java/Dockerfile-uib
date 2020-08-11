@@ -1,6 +1,9 @@
-FROM centos:latest
+FROM registry.access.redhat.com/ubi8/ubi
 
 MAINTAINER hemanth.avs@gmail.com
+
+RUN yum -y update \
+    && yum -y install bind-utils
 
 RUN mkdir -p /java/
 COPY jdk8u265/ /java/
@@ -9,7 +12,8 @@ RUN groupadd -g 1001 java \
     && useradd -r -u 1001 -g java java
 
 RUN mkdir /data \
-    && chown java:java /data
+    && chown java:java /data \ 
+    && chown java:java /java
 
 ENV PATH=/java/bin:$PATH 
 USER java
