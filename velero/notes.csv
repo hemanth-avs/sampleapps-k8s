@@ -47,3 +47,32 @@ Test Output                     ,   5 GB Took   - 15 Min - S3 has 6.3 GB
                                 ,   Iteration 8 - 10 sec - S3 has 9.1 GB - 1958 Obj
                                 ,   Iteration 9 - 10 sec - S3 has 9.1 GB - 1971 Obj
                                 ,   Iteration 10- 10 sec - S3 has 9.1 GB - 1984 Obj
+Helm install                    ,   helm repo add bitnami https://charts.bitnami.com/bitnami
+                                ,   helm install my-release stable/wordpress -n helm
+Access App                      ,   helm get notes my-release -n helm
+                                ,   kubectl get svc --namespace helm -w my-release-wordpress
+                                ,   kubectl -n helm annotate pod backup.velero.io/backup-volumes=data -l app=mariadb
+                                ,   kubectl -n helm annotate pod backup.velero.io/backup-volumes=wordpress-data -l app.kubernetes.io/name=wordpress
+                                ,   helm get values my-release -n helm -a | grep -i registry
+                                ,   ----
+                                ,   image.registry - docker.io/bitnami/wordpress:5.3.2-debian-10-r32
+                                ,   helm upgrade my-release stable/wordpress -n helm --set image.registry=harbor.caas.pez.pivotal.io --reuse-values
+                                ,   ----
+                                ,   metrics.image.registry - docker.io/bitnami/apache-exporter:0.7.0-debian-10-r32
+                                ,   helm upgrade my-release stable/wordpress -n helm --set metrics.image.registry=harbor.caas.pez.pivotal.io --reuse-values
+                                ,   ----
+                                ,   mariadb.image.registry - docker.io/bitnami/mariadb:10.3.22-debian-10-r27
+                                ,   helm upgrade my-release stable/wordpress -n helm --set mariadb.image.registry=harbor.caas.pez.pivotal.io --reuse-values
+                                ,   ----
+                                ,   mariadb.metrics.image.registry - docker.io/bitnami/mysqld-exporter:0.12.1-debian-10-r27
+                                ,   ----
+                                ,   mariadb.volumePermissions.image.registry - docker.io/bitnami/minideb:buster
+                                ,   ----
+                                ,   helm get values my-release -n helm --all -o yaml | yq r - mariadb.volumePermissions.image.registry
+                                ,   helm get values my-release -n helm --all -o yaml | grep -i registry
+                                ,   --- 
+                                ,   helm upgrade -n helm my-release
+Backup                          ,   velero backup create helm-backup-v1 --include-namespaces helm
+                                ,   velero backup describe helm-backup-v1 --details
+yelb                            ,   kubectl set image deployments.apps/yelb-db yelb-db=mreferre/yelb-db:0.5
+                                ,   kubectl set image deployments.apps/redis-server redis=redis:4.0.2

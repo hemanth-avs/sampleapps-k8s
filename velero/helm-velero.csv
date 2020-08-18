@@ -1,0 +1,32 @@
+Chart Install   ,   helm dependency update
+                ,   cd /Users/avsh/code/personal/charts/stable
+                ,   kubectl create ns helm; helm install wp-release wordpress -n helm
+                ,   helm get values wp-release -n helm --all -o yaml | yq r - image.registry
+                ,   helm get values wp-release -n helm --all -o yaml | yq r - mariadb.image.registry
+                ,   helm get notes wp-release -n helm
+                ,   kubectl get secret --namespace helm wp-release-wordpress -o jsonpath="{.data.wordpress-password}" | base64 --decode
+Annotation      ,   kubectl -n helm annotate pod backup.velero.io/backup-volumes=data -l app=mariadb
+                ,   kubectl -n helm annotate pod backup.velero.io/backup-volumes=wordpress-data -l app.kubernetes.io/name=wordpress
+backup          ,   velero backup create helm-backup-v1 --include-namespaces helm
+                ,   velero backup logs helm-backup-v1
+                ,   velero backup describe helm-backup-v1 --details
+Restore         ,   velero restore create --from-backup helm-backup-v1
+                ,   velero restore logs helm-backup-v1-20200811234254
+Restore v1      ,   kubectl get all -n helm
+                ,   helm list -n helm
+                ,   kubectl describe replicasets.apps -l app.kubernetes.io/name=wordpress
+                ,   kubectl describe statefulsets.apps wp-release-mariadb
+                ,   cd /Users/avsh/code/personal/charts/stable
+                ,   helm get values wp-release -n helm --all -o yaml | yq r - image.registry
+                ,   helm upgrade wp-release wordpress -n helm --set image.registry=docker.io
+                ,   helm get values wp-release -n helm --all -o yaml | yq r - mariadb.image.registry
+                ,   helm upgrade wp-release wordpress -n helm --set mariadb.image.registry=docker.io --reuse-values
+                ,   helm upgrade wp-release wordpress -n helm --set image.registry=docker.io; helm upgrade wp-release wordpress -n helm --set mariadb.image.registry=docker.io --reuse-values;
+                ,   kubectl get pods
+                ,   kubectl delete pvc data-wp-release-mariadb-0
+                ,   kubectl delete pvc wp-release-wordpress-759f9ccb56-zd56c
+                ,   velero restore create --from-backup helm-backup-v1 --include-resources persistentvolumeclaims,persistentvolumes
+Verify          ,   helm list -n helm
+                ,   kubectl get svc -n helm
+                ,   kubectl get secret --namespace helm wp-release-wordpress -o jsonpath="{.data.wordpress-password}" | base64 --decode
+
