@@ -1,0 +1,16 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+    name: oidc-cluster-admin-binding
+roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: cluster-admin
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: oidc:pks-admin
+
+# kubectl create clusterrolebinding oidc-cluster-admin-binding --clusterrole=cluster-admin --group=oidc:pks-admin
+# kubectl create clusterrolebinding oidc-cluster-admin-binding --clusterrole=cluster-admin --user=oidc:pks-admin

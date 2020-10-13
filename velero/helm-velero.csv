@@ -21,7 +21,9 @@ Restore v1      ,   kubectl get all -n helm
                 ,   helm upgrade wp-release wordpress -n helm --set image.registry=docker.io
                 ,   helm get values wp-release -n helm --all -o yaml | yq r - mariadb.image.registry
                 ,   helm upgrade wp-release wordpress -n helm --set mariadb.image.registry=docker.io --reuse-values
-                ,   helm upgrade wp-release wordpress -n helm --set image.registry=docker.io; helm upgrade wp-release wordpress -n helm --set mariadb.image.registry=docker.io --reuse-values;
+--------        ,   cd /Users/avsh/code/personal/charts/stable
+                ,   helm upgrade wp-release wordpress -n helm --set image.registry=docker.io; 
+                ,   helm upgrade wp-release wordpress -n helm --set mariadb.image.registry=docker.io --reuse-values;
                 ,   kubectl get pods
                 ,   kubectl delete pvc data-wp-release-mariadb-0
                 ,   kubectl delete pvc wp-release-wordpress-759f9ccb56-zd56c

@@ -76,3 +76,13 @@ Backup                          ,   velero backup create helm-backup-v1 --includ
                                 ,   velero backup describe helm-backup-v1 --details
 yelb                            ,   kubectl set image deployments.apps/yelb-db yelb-db=mreferre/yelb-db:0.5
                                 ,   kubectl set image deployments.apps/redis-server redis=redis:4.0.2
+Demo                            ,   velero get backup
+                                ,   velero get backup  yelb-backup-v2
+                                ,   velero restore create --from-backup yelb-backup-v2
+                                ,   velero get restore
+                                ,   kubectl get ns yelb
+                                ,   kubectl get all -n yelb
+                                ,   kubectl set image deployments.apps/yelb-db yelb-db=mreferre/yelb-db:0.5 -n yelb
+                                ,   kubectl set image deployments.apps/redis-server redis=redis:4.0.2 -n yelb
+                                ,   kubectl set image deployments.apps/yelb-appserver yelb-db=mreferre/yelb-db:0.5 -n yelb
+                                ,   kubectl set image deployments.apps/yelb-ui redis=redis:4.0.2 -n yelb

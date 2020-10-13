@@ -1,0 +1,29 @@
+tkgi get-credentials tkgi-ws2
+
+kubectl delete namespace/velero clusterrolebinding/velero
+kubectl delete crds -l component=velero
+kubectl delete crds -l app=data-protection
+
+Install Velero ::: pre-req.sh
+
+velero get backup-locations
+
+velero backup get
+
+velero restore create --from-backup yelb-20200908143736
+velero restore describe yelb-20200908143736-20201007002215 --details
+
+201 Votes
+
+velero backup create oct-6 --include-namespaces yelb
+velero backup describe oct-6
+velero backup describe oct-6 --details
+
+velero restore create --from-backup yelb-octv1-1
+
+
+kubectl delete -f /Users/avsh/code/personal/repo/sampleapps-k8s/yelb/yelb-ss.yaml
+kubectl apply -f /Users/avsh/code/personal/repo/sampleapps-k8s/yelb/yelb-ss.yaml -n yelb
+
+velero backup create yelb-octv1-1 --include-namespaces yelb
+

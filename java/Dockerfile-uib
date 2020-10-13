@@ -3,17 +3,18 @@ FROM registry.access.redhat.com/ubi8/ubi
 MAINTAINER hemanth.avs@gmail.com
 
 RUN yum -y update \
-    && yum -y install bind-utils
+    && yum -y install bind-utils \
+    && yum clean all
 
-RUN mkdir -p /java/
-COPY jdk8u265/ /java/
+ADD bellsoft-jdk8u265+1-linux-amd64.tar.gz /srv/java
 
 RUN groupadd -g 1001 java \
     && useradd -r -u 1001 -g java java
 
-RUN mkdir /data \
-    && chown java:java /data \ 
-    && chown -R java:java /java
 
-ENV PATH=/java/bin:$PATH 
+RUN mkdir /data \
+    && chown java:java /data \
+    && chown -R java:java /srv/java/jdk8u265
+
+ENV PATH=/srv/java/jdk8u265/bin:/srv/java/jdk8u265:$PATH 
 USER java

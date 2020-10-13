@@ -1,0 +1,30 @@
+export figlet_theme=colossal
+export figlet_theme=doom
+tkgi  # ti0 
+clear; figlet -k -w 150 -f $figlet_theme Multi Tenancy;  # ti1 
+tkgi login -a api.tkgi.caas.pez.pivotal.io -u hr-ops -k  # ti2  2345
+tkgi clusters  # ti3 
+tkgi login -a api.tkgi.caas.pez.pivotal.io -u pks-admin -k  # ti4 
+tkgi clusters  # ti5 
+
+clear; figlet -k -w 150 -f $figlet_theme Create Cluster;  # ti6 
+tkgi plans  # ti7  
+tkgi create-cluster cluster --plan tiny1 --external-hostname cluster.app.caas.pez.pivotal.io --num-nodes 2  # ti8 
+
+clear; figlet -k -w 150 -f $figlet_theme Resize Cluster;  # ti9 
+tkgi cluster tkgi-ws1  # ti10 
+tkgi resize tkgi-ws11 --num-nodes 3  # ti11 
+
+clear; figlet -k -w 150 -f $figlet_theme Delete Cluster;  # ti12  
+tkgi delete-cluster store-test  # ti13 
+
+clear; figlet -k -w 150 -f $figlet_theme Cluster Credentials;  # ti14 
+tkgi get-credentials tkgi-ws2  # ti15 
+kubectl config get-contexts  # ti16 
+kubectl get nodes  # ti17 
+
+clear; figlet -k -w 150 -f $figlet_theme Deploy "  " Application;  # ti18 
+open https://raw.githubusercontent.com/mreferre/yelb/master/images/yelb-architecture.png # yelb0 ti19 
+kubectl apply -f /Users/avsh/code/personal/repo/sampleapps-k8s/yelb/yelb-ss.yaml -n yelb # yelb1 ti20 
+kubectl delete -f /Users/avsh/code/personal/repo/sampleapps-k8s/yelb/yelb-ss.yaml -n yelb # yelb2 ti21 
+

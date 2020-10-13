@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: redis-allow-from-appserver
+spec:
+  podSelector:
+    matchLabels:
+      app: redis-server
+      tier: cache
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+            app: yelb-appserver
+            tier: middletier
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: postgresql-allow-from-appserver
+spec:
+  podSelector:
+    matchLabels:
+      app: yelb-db
+      tier: backenddb
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+            app: yelb-appserver
+            tier: middletier
+---
+  apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    name: appserver-allow-from-ui
+  spec:
+    podSelector:
+      matchLabels:
+        app: yelb-appserver
+        tier: middletier
+    ingress:
+      - from:
+        - podSelector:
+            matchLabels:
+              app: yelb-ui
+              tier: frontend
