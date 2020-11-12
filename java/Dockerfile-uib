@@ -6,15 +6,14 @@ RUN yum -y update \
     && yum -y install bind-utils \
     && yum clean all
 
-ADD bellsoft-jdk8u265+1-linux-amd64.tar.gz /srv/java
+ADD bellsoft-jdk11.0.9+12-linux-amd64.tar.gz /srv/java
 
 RUN groupadd -g 1001 java \
     && useradd -r -u 1001 -g java java
 
-
 RUN mkdir /data \
     && chown java:java /data \
-    && chown -R java:java /srv/java/jdk8u265
+    && chown -R java:java /srv/java/jdk-11.0.9
 
-ENV PATH=/srv/java/jdk8u265/bin:/srv/java/jdk8u265:$PATH 
+ENV PATH=/srv/java/jdk-11.0.9/bin:/srv/java/jdk-11.0.9:$PATH 
 USER java
