@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: nginx-tls1
+  namespace: test
+spec:
+  secretName: nginx-tls1
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - 'pks.tanzucloud.net'
+    - '*.sys.tanzucloud.net'
+    - '*.login.sys.tanzucloud.net'
+    - '*.uaa.sys.tanzucloud.net'
+    - '*.apps.tanzucloud.net'

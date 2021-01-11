@@ -1,0 +1,13 @@
+kids:
+  kid1:
+    height: 20
+    weight: 20
+  kid2:
+    height: 20
+    weight: 20
+  kid3:
+    height: 40
+    weight: 30
+  kid4:
+    height: 30
+    weight: 40

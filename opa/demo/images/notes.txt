@@ -1,0 +1,13 @@
+opa eval -d image.rego -i admission-review.yaml "data.kubernetes.admission" --format=pretty
+
+kubectl apply -f constrainttemplates.yaml
+kubectl apply -f constriant.yaml
+
+kubectl get constrainttemplates.templates.gatekeeper.sh k8simagevalidate -o yaml | kubectl neat
+kubectl describe constrainttemplates.templates.gatekeeper.sh k8simagevalidate 
+kubectl describe K8sImageValidate pivotal-validate
+
+kubectl run nginx1 --image=nginx -n hehe
+
+kubectl apply -f config.yaml
+

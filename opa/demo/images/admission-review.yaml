@@ -1,0 +1,16 @@
+apiVersion: admission.k8s.io/v1beta1
+kind: AdmissionReview
+Review:
+  kind:
+    group:
+    kind: Pod
+    version: v1
+  object:
+    metadata:
+      name: myapp
+    spec:
+      containers:
+        - image: nginx
+          name: nginx-frontend
+        - image: pez.pivotal.io/mysql:v1
+          name: mysql-backend

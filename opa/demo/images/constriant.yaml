@@ -1,0 +1,14 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sImageValidate
+metadata:
+  name: pivotal-validate
+  namespace: hehe
+spec:
+  #enforcementAction: dryrun
+  enforcementAction: deny
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+  parameters:
+    registry: vmware.com

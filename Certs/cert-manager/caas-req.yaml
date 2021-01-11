@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: caas-vsphere
+  namespace: caas
+spec:
+  secretName: caas-vsphere
+  duration: 87600h
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - 'a.tanzucloud.net'
+    - 'b.tanzucloud.net'
