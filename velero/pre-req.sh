@@ -85,9 +85,25 @@ cd /Users/avsh/code/personal/repo/sampleapps-k8s/velero
 BUCKET=velero-avs
 REGION=us-east-1
 
+VeleroImage=velero/velero:v1.4.2
+VeleroAWSPlugin=velero/velero-plugin-for-aws:v1.1.0
+
+VeleroImage=harbor.tkgi.caas.pez.pivotal.io/cocc/velero:v1.4.2
+VeleroAWSPlugin=harbor.tkgi.caas.pez.pivotal.io/cocc/velero-plugin-for-aws:v1.1.0
+
 velero install \
     --provider aws \
     --plugins velero/velero-plugin-for-aws:v1.1.0 \
+    --bucket $BUCKET \
+    --backup-location-config region=$REGION \
+    --snapshot-location-config region=$REGION \
+    --secret-file ./credentials-velero.template \
+    --use-restic
+
+velero install \
+    --provider aws \
+    --image $VeleroImage \
+    --plugins $VeleroAWSPlugin \
     --bucket $BUCKET \
     --backup-location-config region=$REGION \
     --snapshot-location-config region=$REGION \
@@ -104,3 +120,8 @@ velero backup-location create test-backup \
     --access-mode=ReadOnly
     --config region=us-east-1
     --secret-file ./credentials-velero.template
+
+
+kubectl delete namespace/velero clusterrolebinding/velero
+kubectl delete crds -l component=velero
+kubectl delete crds -l app=data-protection

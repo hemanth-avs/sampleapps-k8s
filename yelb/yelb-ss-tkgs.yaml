@@ -194,7 +194,7 @@ metadata:
   labels:
     app: redis-server
   annotations:
-    volume.beta.kubernetes.io/storage-class: thin-disk
+    volume.beta.kubernetes.io/storage-class: tanzu
 spec:
   accessModes:
     - ReadWriteOnce
@@ -211,7 +211,7 @@ metadata:
   labels:
     app: yelb-db
   annotations:
-    volume.beta.kubernetes.io/storage-class: thin-disk
+    volume.beta.kubernetes.io/storage-class: tanzu
 spec:
   accessModes:
     - ReadWriteOnce
